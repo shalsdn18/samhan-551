@@ -119,3 +119,5 @@ export const FACTION_START = {
   GOGURYEO:{army:'a_gogu_2',clan:'goguryeo_royal',tile:'1,1'},
   BAEKJE:{army:'a_baekje_1',clan:'baekje_royal',tile:'0,1'}
 };
+
+export { MAP_PRESET_V05, GENERALS, UNIT_TYPES } from './v05_data.js';

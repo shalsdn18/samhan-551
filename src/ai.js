@@ -1,6 +1,7 @@
 import {getNeighbors,getDistance,tileKey,updateSupplyLines,isBlockedByEnemyFortZOC,findTileByNodeId} from './map.js';
 import {getRelation} from './data.js';
 import {UNIT_TYPES} from './v05_data.js';
+import {GENERALS} from './v05_data.js';
 
 const NPC_FACTIONS=['SILLA','GOGURYEO','BAEKJE'];
 const GOALS={HANSEONG:'hanseong',GWANSAN:'gwansan',SILLA_SUPPLY:'geumseong'};
@@ -36,7 +37,7 @@ function recruitAtStronghold(state,faction,hooks){
   const tile=strongholds[0];if(!tile)return;
   treasury.gold-=180;treasury.food-=280;
   state.aiArmySeq=(state.aiArmySeq||0)+1;
-  const army={id:`ai_${faction.toLowerCase()}_${state.aiArmySeq}`,name:`${tile.node.name} 증원군`,owner:faction,clanId:null,q:tile.q,r:tile.r,troops:1600,maxTroops:1800,morale:90,supplied:true,ap:2};
+  const army={id:`ai_${faction.toLowerCase()}_${state.aiArmySeq}`,name:`${tile.node.name} 증원군`,owner:faction,clanId:null,commanderId:GENERALS.find(g=>g.faction===faction)?.id||null,unitType:'INFANTRY',q:tile.q,r:tile.r,troops:1600,maxTroops:1800,morale:90,supplied:true,ap:2};
   state.armies.push(army);
   hooks.log(`🛡️ [${formatFaction(faction)} 징병] ${tile.node.name}에서 ${army.name} 1,600명을 소집했습니다. (군단 ${armyList.length+1}/4)`);
 }
@@ -166,10 +167,10 @@ export function resolveBattle(state,attacker,defender,tile,attackerCard,defender
   const beats={charge:'ambush',ambush:'formation',formation:'charge'};
   if(beats[attackerCard]===defenderCard){atkTactic=1.3;defTactic=.8;advantage='attacker'}else if(beats[defenderCard]===attackerCard){defTactic=1.3;atkTactic=.8;advantage='defender'}
   const defBonus=tile.node?.def||(tile.terrain==='산악'?1.4:1);
-  const commanderFactor=army=>{const general=state.generals?.find(item=>item.id===army.commanderId);return general?1+(general.leadership+general.martial)/400:1};
+  const commanderFactor=(army,attacking)=>{const general=state.generals?.find(item=>item.id===army.commanderId);if(!general)return 1;let bonus=1+(general.leadership+general.martial)/400;if(attacking&&general.traits.includes('사기 진작'))bonus*=1.15;if(!attacking&&tile.node?.type==='FORT'&&general.traits.includes('산성 수비관'))bonus*=1.25;if(UNIT_TYPES[army.unitType]?.plains&&tile.terrain==='평야'&&general.traits.includes('개마무사 지휘관'))bonus*=1.2;return bonus};
   const unitFactor=army=>{const type=UNIT_TYPES[army.unitType]||UNIT_TYPES.INFANTRY;return type.plains&&tile.terrain==='평야'?type.plains:type.fortDefense&&tile.node?.type==='FORT'?type.fortDefense:type.ambush||1};
-  const atkFactionBonus=(attacker.owner==='GOGURYEO'?(state.attackBonus||1):1)*(state.commanderBonusByFaction?.[attacker.owner]||1)*commanderFactor(attacker)*unitFactor(attacker);
-  const defFactionBonus=(defender.owner==='GOGURYEO'?(state.defenseBonus||1):1)*(state.commanderBonusByFaction?.[defender.owner]||1)*commanderFactor(defender)*unitFactor(defender);
+  const atkFactionBonus=(attacker.owner==='GOGURYEO'?(state.attackBonus||1):1)*(state.commanderBonusByFaction?.[attacker.owner]||1)*commanderFactor(attacker,true)*unitFactor(attacker);
+  const defFactionBonus=(defender.owner==='GOGURYEO'?(state.defenseBonus||1):1)*(state.commanderBonusByFaction?.[defender.owner]||1)*commanderFactor(defender,false)*unitFactor(defender);
   const atkPower=attacker.troops*(attacker.morale/100)*(attacker.supplied?1:.55)*atkTactic*atkFactionBonus;
   const defPower=defender.troops*(defender.morale/100)*defBonus*defTactic*defFactionBonus;
   const atkLoss=Math.min(attacker.troops,Math.max(100,Math.floor(defPower*(automatic?.23:.28))));
