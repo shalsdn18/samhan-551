@@ -9,9 +9,9 @@ export function updateSupplyLines(state){
   for(const tile of Object.values(state.tiles)){tile.zocWarning=Boolean(isBlockedByEnemyFortZOC(state,tile,state.playerFaction));for(const faction of factions)tile[`suppliedFor${faction}`]=false}
   for(const faction of factions){
     const property=`suppliedFor${faction}`,queue=[];
-    const hubs=Object.values(state.tiles).filter(tile=>tile.owner===faction&&(tile.node?.isSupplyHub===true||['CAPITAL','FORT','PORT'].includes(tile.node?.type)));
+    const hubs=Object.values(state.tiles).filter(tile=>tile.owner===faction&&(tile.isSupplyHub===true||tile.node?.isSupplyHub===true||['CAPITAL','FORT','PORT'].includes(tile.node?.type)));
     for(const hub of hubs){hub[property]=true;queue.push(hub)}
     for(let i=0;i<queue.length;i++)for(const next of getNeighbors(state,queue[i].q,queue[i].r))if(next.owner===faction&&!next[property]&&!isBlockedByEnemyFortZOC(state,next,faction)){next[property]=true;queue.push(next)}
   }
-  for(const army of state.armies){const tile=state.tiles[tileKey(army.q,army.r)];army.supplied=!army.zocSupplyCut&&Boolean(tile?.[`suppliedFor${army.owner}`])}
+  for(const army of state.armies){const tile=state.tiles[tileKey(army.q,army.r)];army.supplyEfficiency=(tile&&!tile.isCore&&tile.resistance>=50)?0.75:1;army.supplied=!army.zocSupplyCut&&Boolean(tile?.[`suppliedFor${army.owner}`])}
 }

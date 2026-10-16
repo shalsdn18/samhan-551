@@ -1,3 +1,5 @@
+import { MAP_PRESET_V05 as MAP_DATA_V05 } from './v05_data.js';
+
 export const FACTIONS = {
   SILLA: { id: 'SILLA', name: '신라', color: '#2563eb', border: '#60a5fa' },
   GOGURYEO: { id: 'GOGURYEO', name: '고구려', color: '#dc2626', border: '#f87171' },
@@ -38,7 +40,8 @@ export const CLANS = {
   goguryeo_royal: { id:'goguryeo_royal', faction:'GOGURYEO', name:'고구려 왕실', leader:'양원왕', rank:'왕족', isKing:true, gold:500, privateArmy:1800, loyalty:100, influence:40, fief:'평양성' },
   goguryeo_yakbu: { id:'goguryeo_yakbu', faction:'GOGURYEO', name:'연씨 대귀족', leader:'연가 귀족', rank:'5부 대가', isKing:false, gold:620, privateArmy:2100, loyalty:72, influence:45, fief:'국내성' },
   baekje_royal: { id:'baekje_royal', faction:'BAEKJE', name:'백제 왕실', leader:'성왕', rank:'왕족', isKing:true, gold:500, privateArmy:1700, loyalty:100, influence:40, fief:'웅진성' },
-  baekje_hae: { id:'baekje_hae', faction:'BAEKJE', name:'해씨 대귀족', leader:'해구', rank:'대성팔족', isKing:false, gold:580, privateArmy:2000, loyalty:70, influence:42, fief:'사비성' }
+  baekje_hae: { id:'baekje_hae', faction:'BAEKJE', name:'해씨 대귀족', leader:'해구', rank:'대성팔족', isKing:false, gold:580, privateArmy:2000, loyalty:70, influence:42, fief:'사비성' },
+  gaya_royal: { id:'gaya_royal', faction:'GAYA', name:'대가야 왕실', leader:'이뇌왕', rank:'왕족', isKing:true, gold:400, privateArmy:1100, loyalty:100, influence:35, fief:'고령 대가야궁' }
 };
 
 export const FACTION_CAMPAIGNS = {
@@ -47,24 +50,7 @@ export const FACTION_CAMPAIGNS = {
   GOGURYEO:{leader:'양원왕',traits:'5부 연합과 산성 방어망. 한강 방어선을 지키며 끊어진 적 보급군을 역습합니다.',difficulty:'보통',royalClan:'goguryeo_royal',nobleClan:'goguryeo_yakbu',color:'#dc2626'}
 };
 
-export const MAP_PRESET = [
-  {q:0,r:0,owner:'GOGURYEO',terrain:'해안',node:{type:'PORT',name:'북진항',def:1.2}},
-  {q:1,r:0,owner:'GOGURYEO',terrain:'산악',node:{type:'FORT',name:'북한산성',def:2.5}},
-  {q:2,r:0,owner:'GOGURYEO',terrain:'산악',node:null},
-  {q:3,r:0,owner:'GOGURYEO',terrain:'산악',node:{type:'FORT',name:'아차산성',def:2.2}},
-  {q:0,r:1,owner:'BAEKJE',terrain:'평야',node:{type:'PORT',name:'서해 수군항',def:1.1}},
-  {q:1,r:1,owner:'GOGURYEO',terrain:'평야',node:{type:'CAPITAL',name:'한성(옛 도읍)',def:1.6}},
-  {q:2,r:1,owner:'GOGURYEO',terrain:'하천',node:null},
-  {q:3,r:1,owner:'SILLA',terrain:'산악',node:{type:'TOWN',name:'추풍령',def:1.3}},
-  {q:0,r:2,owner:'BAEKJE',terrain:'평야',node:{type:'TOWN',name:'익산 북부',def:1.3}},
-  {q:1,r:2,owner:'SILLA',terrain:'평야',node:null},
-  {q:2,r:2,owner:'SILLA',terrain:'산악',node:{type:'FORT',name:'단양 적성',def:2.0,isSupplyHub:true}},
-  {q:3,r:2,owner:'SILLA',terrain:'산악',node:null},
-  {q:0,r:3,owner:'BAEKJE',terrain:'산악',node:null},
-  {q:1,r:3,owner:'SILLA',terrain:'산악',node:{type:'FORT',name:'관산성',def:1.8}},
-  {q:2,r:3,owner:'SILLA',terrain:'평야',node:{type:'TOWN',name:'충주 소경',def:1.4}},
-  {q:3,r:3,owner:'SILLA',terrain:'평야',node:{type:'CAPITAL',name:'경주 금성',def:1.8,isSupplyHub:true}}
-];
+export const MAP_PRESET = MAP_DATA_V05;
 
 export const INITIAL_ARMIES = [
   {id:'a_silla_1',name:'신라 직할 북진군',owner:'SILLA',clanId:'kim_royal',q:2,r:2,troops:3000,maxTroops:3000,morale:100,supplied:true,ap:2},
@@ -72,7 +58,9 @@ export const INITIAL_ARMIES = [
   {id:'a_gogu_1',name:'고구려 북한산성 수비대',owner:'GOGURYEO',clanId:'goguryeo_royal',q:1,r:0,troops:2600,maxTroops:2600,morale:100,supplied:true,ap:1},
   {id:'a_gogu_2',name:'고구려 한성 주둔군',owner:'GOGURYEO',clanId:'goguryeo_royal',q:1,r:1,troops:2000,maxTroops:2000,morale:95,supplied:true,ap:1},
   {id:'a_baekje_1',name:'백제 서해 방면군',owner:'BAEKJE',clanId:'baekje_royal',q:0,r:1,troops:2400,maxTroops:2400,morale:100,supplied:true,ap:1},
-  {id:'a_baekje_2',name:'백제 웅진 북진군',owner:'BAEKJE',clanId:'baekje_royal',q:0,r:2,troops:1900,maxTroops:1900,morale:95,supplied:true,ap:1}
+  {id:'a_baekje_2',name:'백제 웅진 북진군',owner:'BAEKJE',clanId:'baekje_royal',q:0,r:2,troops:1900,maxTroops:1900,morale:95,supplied:true,ap:1},
+  {id:'a_gogu_3',name:'고구려 평양 개마무사군',owner:'GOGURYEO',clanId:'goguryeo_royal',q:0,r:0,troops:2700,maxTroops:2700,morale:100,supplied:true,ap:3,unitType:'CAVALRY',commanderId:'ondal'},
+  {id:'a_gogu_4',name:'고구려 아차산성 역습군',owner:'GOGURYEO',clanId:'goguryeo_royal',q:2,r:1,troops:2700,maxTroops:2700,morale:100,supplied:true,ap:3,unitType:'CAVALRY',commanderId:'yeon-dae'}
 ];
 
 export const TACTICS = [
@@ -93,7 +81,7 @@ export const EXTRA_CLANS = {
   GOGURYEO:[['goguryeo_go','고씨 방계','남부 대가','수성파'],['goguryeo_ondal','온달 무장파','온달','북부 신흥파']]
 };
 export const CLAN_LORE = {
-  baekje_hae:{region:'한성·웅진 구왕실 외척',famousFor:'병관좌평 해구와 문주왕 시해 사건',lore:'한성 시절부터 병권을 쥐어 온 대성팔족의 필두입니다. 해구의 후예라는 기억은 가문의 자부심이자 왕실의 경계 대상이며, 고토 회복에는 앞장서되 전공에 따른 봉토를 당연한 권리로 요구합니다.'},
+  baekje_hae:{region:'한성·웅진 구왕실 외척',famousFor:'478년 문주왕 시해 사건의 해구를 모티프로 삼은 가상 후손 설정',lore:'게임 속 해씨 가문은 478년 문주왕을 시해한 것으로 전하는 해구 본인이 아니라, 그 이름을 잇는 가상의 후손·동명이인 해구를 내세웁니다. 한성 시절부터 병권을 쥐어 온 대성팔족의 무장파라는 서사와 실제 혈연 계보는 구분하며, 고토 회복 전공에 따른 봉토 요구도 창작 설정입니다.'},
   baekje_sa:{region:'사비·금강 수운',famousFor:'남조 양나라와 왜를 잇는 해상 교역',lore:'금강 물길과 남해 항로를 장악해 사비의 창고를 채운 실리파입니다. 북방의 소모전보다 교역로의 안전과 조세 특권을 중시하며, 왕실의 전쟁이 바닷길까지 흔들지 않을지 먼저 따집니다.'},
   baekje_jin:{region:'패하·북방 변경',famousFor:'달솔과 병관좌평을 거듭 배출한 변경 군벌',lore:'고구려와 맞닿은 패하 유역에서 세력을 키운 군사 가문입니다. 빼앗긴 옛 영지를 되찾는 일을 대대로의 원한으로 여기며, 명분이 서면 선봉을 자청합니다.'},
   baekje_mok:{region:'웅진 중앙 조정',famousFor:'한성 함락 뒤 왕실을 보위한 목협만치',lore:'한성 함락 때 개로왕의 명을 받들어 남하한 충신들의 계보를 잇습니다. 뇌물이나 사사로운 전공 약속에는 흔들리지 않고, 충분한 군량과 백성이 납득할 대의가 갖춰져야 출병에 동의합니다.'},
@@ -115,9 +103,9 @@ export const WORLD_TENSION_EVENTS = {
 };
 
 export const FACTION_START = {
-  SILLA:{army:'a_silla_1',clan:'kim_royal',tile:'2,2'},
-  GOGURYEO:{army:'a_gogu_2',clan:'goguryeo_royal',tile:'1,1'},
-  BAEKJE:{army:'a_baekje_1',clan:'baekje_royal',tile:'0,1'}
+  SILLA:{army:'a_silla_1',clan:'kim_royal',tile:'5,4'},
+  GOGURYEO:{army:'a_gogu_3',clan:'goguryeo_royal',tile:'0,0'},
+  BAEKJE:{army:'a_baekje_2',clan:'baekje_royal',tile:'1,3'}
 };
 
 export { MAP_PRESET_V05, GENERALS, UNIT_TYPES } from './v05_data.js';
